@@ -1,0 +1,55 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  test-contracts:
+    docker:
+      - image: cimg/node:18.16
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Install Foundry
+          command: |
+            curl -L https://foundry.paradigm.xyz | bash
+            foundryup
+      - run:
+          name: Run Tests
+          command: forge test -vvv
+          
+  deploy-frontend:
+    docker:
+      - image: cimg/node:18.16
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+          app-dir: frontend
+      - run:
+          name: Build Frontend
+          command: cd frontend && npm run build
+      - run:
+          name: Deploy to Vercel
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "main" ]; then
+              npx vercel --token ${VERCEL_TOKEN} --prod
+            else
+              npx vercel --token ${VERCEL_TOKEN}
+            fi
+
+workflows:
+  version: 2
+  test-and-deploy:
+    jobs:
+      - test-contracts
+      - deploy-frontend:
+          requires:
+            - test-contracts
+          filters:
+            branches:
+              only:
+                - main
+                - develop

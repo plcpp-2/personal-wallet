@@ -1,0 +1,14 @@
+{
+  "name": "personal-wallet",
+  "version": "1.0.0",
+  "description": "Personal wallet implementation with ethers.js and cheatcalls",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ethers": "^6.11.1",
+    "dotenv": "^16.4.1"
+  },
+  "type": "module"
+}

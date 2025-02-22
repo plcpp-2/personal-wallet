@@ -1,0 +1,18 @@
+{
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/.next",
+  "devCommand": "cd frontend && npm run dev",
+  "installCommand": "cd frontend && npm install",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
+    }
+  ],
+  "env": {
+    "ALCHEMY_API_KEY": "@alchemy_api_key",
+    "BASE_SEPOLIA_RPC": "@base_sepolia_rpc",
+    "WALLET_ADDRESS": "@wallet_address"
+  }
+}
